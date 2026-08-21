@@ -8,6 +8,11 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 });
 
+pool.on('error', (err) => {
+  console.error('Unexpected database pool error:', err.message);
+});
+
 module.exports = {
   query: (text, params) => pool.query(text, params),
+  ping: () => pool.query('SELECT 1'),
 };
